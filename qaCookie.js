@@ -27,16 +27,31 @@
                 }
             };
         };
+    function getDomain() {
+        var dom = window.location.hostname.split('.');
+        if (dom.length > 2) {
+            dom.shift();
+        }
+        return dom.join('.');
+    }
     function init() {
         var params = new URLSearchParams(window.location.search);
+        var cookieDomain = getDomain();
+        var cookieName = '';
+        var cookieValue = 'true';
         if (params.has('qaCookie')) {
-            var cookieName = params.get('qaCookie');
+            cookieName = params.get('qaCookie');
             // cookie value is either true or the value of the qaValue parameter if it exists
-            var cookieValue = 'true';
             if (params.has('qaValue')) {
                 cookieValue = params.get('qaValue');
             }
-            document.cookie = cookieName + '=' + cookieValue + '; path=/';
+            document.cookie =
+                cookieName +
+                '=' +
+                cookieValue +
+                '; path=/; domain=.' +
+                cookieDomain +
+                '';
         }
     }
     init();
